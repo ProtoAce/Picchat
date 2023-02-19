@@ -6,21 +6,14 @@ import 'firebase/compat/firestore';
 import 'firebase/auth';
 import 'firebase/compat/analytics';
 import { getAuth, onAuthStateChanged } from "firebase/compat/auth";
+import firebaseConfig from './firebaseConfig.json'
 
 
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-firebase.initializeApp({
-  apiKey: "AIzaSyDVPpLP38JJzpgeQEjgByVc6cEOvvlXLkU",
-  authDomain: "picchat-18f52.firebaseapp.com",
-  projectId: "picchat-18f52",
-  storageBucket: "picchat-18f52.appspot.com",
-  messagingSenderId: "248552994572",
-  appId: "1:248552994572:web:39ea99a47439003b827b29",
-  measurementId: "G-02QR80ZKXQ"
-})
+firebase.initializeApp(firebaseConfig)
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
