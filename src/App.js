@@ -13,30 +13,42 @@ import firebaseConfig from './firebaseConfig.json'
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
-const analytics = firebase.analytics();
+// const analytics = firebase.analytics();
 
 
 function App() {
-
   const [user] = useAuthState(auth);
+  const [currentPage, setCurrentPage] = useState('allGroups');
+
+    function handleChatRoom() {
+        setCurrentPage('chatRoom');
+    }
+
+    function handleAllGroups() {
+        setCurrentPage('allGroups');
+    }
 
   return (
     <div className="App">
       <header>
-        <h1>⚛️🔥💬</h1>
+        <h1>Lost in Translation</h1>
         <SignOut />
       </header>
 
       <section>
-        {user ? <ChatRoom /> : <SignIn />}
-      </section>
-
+         {/* {user ? <AllGroups /> : <SignIn />} */}
+        {user ? currentPage === 'allGroups' ? <AllGroups handleChatRoom={handleChatRoom} /> :<ChatRoom /> : <SignIn />}
+       </section>
     </div>
   );
+
+    //   <section>
+    //     {user ? <AllGroups /> : <SignIn />}
+    //   </section>
 }
 
 function SignIn() {
@@ -61,10 +73,9 @@ function SignOut() {
   )
 }
 
-
-function ChatRoom() {
+function ChatRoom(){
   const dummy = useRef();
-  const messagesRef = firestore.collection('messages');
+  const messagesRef = firestore.collection('chats');
   const query = messagesRef.orderBy('createdAt').limit(25);
 
   const [messages] = useCollectionData(query, { idField: 'id' });
@@ -101,12 +112,24 @@ function ChatRoom() {
 
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="say something nice" />
 
-      <button type="submit" disabled={!formValue}>🕊️</button>
+      <button class="sendbtn" type="submit" disabled={!formValue}>➤➤➤</button>
 
     </form>
   </>)
 }
 
+function AllGroups(handleChatRoom){
+
+    return (<>
+        <form>
+          <button class="rooms" onClick={handleChatRoom}>Chatroom 1</button>
+          <button class="rooms" onClick={handleChatRoom}>Chatroom 2</button>
+          <button class="rooms">Chatroom 3</button>
+          <button class="rooms">Chatroom 4</button>
+          <button class="rooms">Chatroom 5</button>
+        </form>
+      </>);
+}
 
 function ChatMessage(props) {
   const { text, uid, photoURL } = props.message;
@@ -115,7 +138,7 @@ function ChatMessage(props) {
 
   return (<>
     <div className={`message ${messageClass}`}>
-      <profileImg src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} />
+      <img class="profileImg" src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'} />
       <img src={require('./test.jpg')}/>
     </div>
   </>)
