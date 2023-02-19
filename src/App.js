@@ -184,7 +184,8 @@ function ChatMessage(props) {
             photoURL || "https://api.adorable.io/avatars/23/abott@adorable.png"
           }
         />
-        <img src={require("./test.jpg")} />
+        <img class="ai-img" src={require("./test.jpg")} />
+        <p class="hiddentext">{text}</p>
       </div>
     </>
   );
