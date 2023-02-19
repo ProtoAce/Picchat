@@ -160,4 +160,13 @@ img {
   margin: 2px 5px;
 }
 
+.hiddentext {
+    display: none; 
+    visibility: hidden; 
+}
+
+.ai-img:hover + .hiddentext {
+    display: flex;
+    visibility: visible;
+}
 
