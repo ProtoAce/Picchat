@@ -22,7 +22,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState("allGroups");
 
   function handleChatRoom() {
-    setCurrentPage("chatRoom");
+    setCurrentPage("chats");
   }
 
   function handleAllGroups() {
@@ -39,12 +39,13 @@ function App() {
       </header>
 
       <section>
-        {/* {user ? <AllGroups /> : <SignIn />} */}
         {user ? (
           currentPage == "allGroups" ? (
-            <AllGroups handleChatRoom={() => setCurrentPage("chatRoom")} />
+            <AllGroups
+              handleChatRoom={(chatName) => setCurrentPage(chatName)}
+            />
           ) : (
-            <ChatRoom />
+            <ChatRoom chatName={currentPage} />
           )
         ) : (
           <SignIn />
@@ -96,9 +97,9 @@ function Back({ handleAllGroups }) {
   );
 }
 
-function ChatRoom() {
+function ChatRoom({ chatName }) {
   const dummy = useRef();
-  const messagesRef = firestore.collection("chats");
+  const messagesRef = firestore.collection(chatName);
   const query = messagesRef.orderBy("createdAt").limit(25);
 
   const [messages] = useCollectionData(query, { idField: "id" });
@@ -149,15 +150,21 @@ function AllGroups({ handleChatRoom }) {
   return (
     <>
       <form>
-        <button class="rooms" onClick={() => handleChatRoom()}>
+        <button class="rooms" onClick={() => handleChatRoom("chats")}>
           Chatroom 1
         </button>
-        <button class="rooms" onClick={() => handleChatRoom()}>
+        <button class="rooms" onClick={() => handleChatRoom("chats1")}>
           Chatroom 2
         </button>
-        <button class="rooms">Chatroom 3</button>
-        <button class="rooms">Chatroom 4</button>
-        <button class="rooms">Chatroom 5</button>
+        <button class="rooms" onClick={() => handleChatRoom("chats2")}>
+          Chatroom 3
+        </button>
+        <button class="rooms" onClick={() => handleChatRoom("chats3")}>
+          Chatroom 4
+        </button>
+        <button class="rooms" onClick={() => handleChatRoom("chats4")}>
+          Chatroom 5
+        </button>
       </form>
     </>
   );
